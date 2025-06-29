@@ -651,6 +651,22 @@
          width: 100%;
          padding: var(--spacing-md);
          transition: none;
+         overflow-x: hidden;
+     }
+
+     /* Amélioration de la section principale */
+     .main-content {
+         max-width: 100%;
+         overflow-x: hidden;
+     }
+
+     /* Espacement des sections */
+     .task-input-section {
+         margin-bottom: var(--spacing-lg);
+     }
+
+     .task-list-section {
+         margin-top: var(--spacing-md);
      }
 
      /* Header mobile optimisé */
@@ -886,6 +902,50 @@
      flex-wrap: wrap;
  }
 
+ /* Disposition mobile du formulaire */
+ @media (max-width: 768px) {
+     .task-input-container {
+         flex-direction: column;
+         gap: var(--spacing-sm);
+     }
+
+     .task-options {
+         display: flex;
+         flex-direction: column;
+         gap: var(--spacing-sm);
+         width: 100%;
+     }
+
+     .task-options select {
+         width: 100% !important;
+         min-height: 44px;
+     }
+
+     .task-input-section {
+         padding: var(--spacing-md);
+     }
+
+     #task-input {
+         width: 100%;
+         min-height: 44px;
+         font-size: 1rem;
+     }
+
+     .btn-add-task {
+         width: 100%;
+         min-height: 48px;
+         font-size: 1rem;
+         margin-top: var(--spacing-sm);
+     }
+
+     .advanced-toggle {
+         width: 100%;
+         justify-content: center;
+         margin-top: var(--spacing-sm);
+         min-height: 44px;
+     }
+ }
+
  .task-input-container .input {
      flex: 1;
      min-width: 200px;
@@ -912,6 +972,32 @@
 
  .advanced-row .input {
      flex: 1;
+ }
+
+ /* Options avancées en mode mobile */
+ @media (max-width: 768px) {
+     .advanced-options {
+         padding-top: var(--spacing-md);
+         margin-top: var(--spacing-sm);
+     }
+
+     .advanced-row {
+         flex-direction: column;
+         gap: var(--spacing-sm);
+         margin-bottom: var(--spacing-sm);
+     }
+
+     .advanced-row .input {
+         width: 100%;
+         min-height: 44px;
+         font-size: 1rem;
+         flex: none;
+     }
+
+     .advanced-row select {
+         width: 100%;
+         min-height: 44px;
+     }
  }
 
  .task-item {
@@ -3031,6 +3117,30 @@
      .task-form .input {
          font-size: 16px;
          /* Évite le zoom sur iOS */
+     }
+
+     /* Amélioration du formulaire mobile */
+     .task-input-section {
+         padding: var(--spacing-sm);
+         margin-bottom: var(--spacing-md);
+     }
+
+     .task-input-container {
+         gap: var(--spacing-xs);
+     }
+
+     .task-options {
+         gap: var(--spacing-xs);
+     }
+
+     /* Boutons plus visibles sur mobile */
+     .btn-add-task {
+         font-weight: 600;
+         letter-spacing: 0.5px;
+     }
+
+     .advanced-toggle {
+         font-size: 0.9rem;
      }
 
      /* Vues spéciales sur mobile */
