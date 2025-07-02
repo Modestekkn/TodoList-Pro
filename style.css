@@ -677,6 +677,35 @@
          z-index: 100;
          backdrop-filter: blur(10px);
          border-bottom: 1px solid var(--bg-tertiary);
+         /* Empiler les éléments verticalement */
+         flex-direction: column;
+         align-items: flex-start;
+         gap: var(--spacing-md);
+     }
+
+     .app-header>div {
+         width: 100%;
+     }
+
+     /* Conteneur pour les actions de l'en-tête (recherche, timer, etc.) */
+     .app-header .flex.items-center.gap-4:last-child {
+         flex-wrap: wrap;
+         justify-content: flex-start;
+     }
+
+     /* La barre de recherche prend toute la largeur */
+     .search-container {
+         width: 100%;
+         margin-bottom: var(--spacing-sm);
+     }
+
+     .search-input {
+         width: 100% !important;
+     }
+
+     /* Cacher le titre de l'application pour gagner de la place */
+     .app-title {
+         display: none;
      }
 
      /* Bouton hamburger amélioré */
@@ -705,6 +734,44 @@
 
      .hamburger-btn:active {
          transform: scale(0.95);
+     }
+
+     /* Amélioration de la saisie des tâches pour mobile */
+     .task-options {
+         flex-direction: column;
+         width: 100%;
+         gap: var(--spacing-sm);
+     }
+
+     .task-options select,
+     .task-options input {
+         width: 100% !important;
+     }
+
+     /* Amélioration des éléments de tâche pour mobile */
+     .task-item {
+         flex-direction: column;
+         align-items: flex-start;
+         gap: var(--spacing-md);
+     }
+
+     .task-actions {
+         opacity: 1;
+         /* Toujours visible sur mobile */
+         width: 100%;
+         justify-content: flex-start;
+         flex-wrap: wrap;
+         gap: var(--spacing-sm);
+         margin-top: var(--spacing-sm);
+     }
+
+     .task-item:hover .task-actions {
+         opacity: 1;
+         /* Maintenir l'opacité */
+     }
+
+     .task-content {
+         width: 100%;
      }
  }
 
@@ -1083,6 +1150,32 @@
 
  .task-item:hover .task-actions {
      opacity: 1;
+ }
+
+ /* Amélioration des éléments de tâche pour mobile */
+ @media (max-width: 768px) {
+     .task-item {
+         flex-direction: column;
+         align-items: flex-start;
+         gap: var(--spacing-md);
+     }
+
+     .task-actions {
+         opacity: 1; /* Toujours visible sur mobile */
+         width: 100%;
+         justify-content: flex-start;
+         flex-wrap: wrap;
+         gap: var(--spacing-sm);
+         margin-top: var(--spacing-sm);
+     }
+
+     .task-item:hover .task-actions {
+         opacity: 1; /* Maintenir l'opacité */
+     }
+
+     .task-content {
+         width: 100%;
+     }
  }
 
  .btn-icon {
