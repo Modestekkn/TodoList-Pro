@@ -1,13 +1,13 @@
  /* Variables CSS pour le système de design */
  :root {
      /* Couleurs principales */
-     --primary-color: #6366f1;
-     --primary-dark: #4f46e5;
-     --primary-light: #a5b4fc;
-     --secondary-color: #10b981;
-     --accent-color: #f59e0b;
-     --danger-color: #ef4444;
-     --warning-color: #f97316;
+     --primary-color: #6D28D9; /* Violet profond */
+     --primary-dark: #5B21B6;
+     --primary-light: #A78BFA;
+     --secondary-color: #06B6D4; /* Cyan vif */
+     --accent-color: #F59E0B;
+     --danger-color: #EF4444;
+     --warning-color: #F97316;
 
      /* Couleurs de fond */
      --bg-primary: #ffffff;
@@ -78,6 +78,10 @@
      /* Firefox */
      -ms-overflow-style: none;
      /* Internet Explorer 10+ */
+ }
+
+ h1, h2, h3, h4, h5, h6, .app-title, .sidebar-title, .kanban-title {
+     font-family: 'Montserrat', sans-serif;
  }
 
  @keyframes fadeInApp {
@@ -309,32 +313,36 @@
  }
 
  .btn:hover {
-     transform: translateY(-2px);
-     box-shadow: var(--shadow-md);
+     transform: translateY(-3px) scale(1.02);
+     box-shadow: var(--shadow-lg);
  }
 
  .btn:active {
-     transform: translateY(0);
+     transform: translateY(-1px) scale(0.98);
      transition: transform 0.1s ease;
+     box-shadow: var(--shadow-sm);
  }
 
  .btn-primary {
      background: var(--primary-color);
      color: var(--text-light);
+     box-shadow: 0 4px 15px rgba(109, 40, 217, 0.3);
  }
 
  .btn-primary:hover {
      background: var(--primary-dark);
-     transform: translateY(-1px);
+     box-shadow: 0 6px 20px rgba(91, 33, 182, 0.4);
  }
 
  .btn-secondary {
      background: var(--bg-tertiary);
      color: var(--text-primary);
+     box-shadow: var(--shadow-sm);
  }
 
  .btn-secondary:hover {
      background: var(--text-muted);
+     box-shadow: var(--shadow-md);
  }
 
  /* Boutons avec icônes seulement - largeur réduite pour meilleur centrage */
@@ -374,24 +382,22 @@
      align-items: center;
      justify-content: center;
      gap: 0;
+     border-radius: 50%; /* Rendre les boutons icônes ronds */
+     background: var(--bg-tertiary);
+     color: var(--text-secondary);
+     box-shadow: var(--shadow-sm);
  }
 
- .btn-icon i {
-     margin: 0;
-     line-height: 1;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     width: 100%;
-     height: 100%;
+ .btn-icon:hover {
+     background: var(--primary-color);
+     color: var(--text-light);
+     transform: scale(1.1);
+     box-shadow: var(--shadow-md);
  }
 
- /* Styles spécifiques pour Font Awesome dans les boutons icônes */
- .btn-icon .fas,
- .btn-icon .far,
- .btn-icon .fab {
-     text-align: center;
-     vertical-align: middle;
+ .btn-icon:active {
+     transform: scale(0.95);
+     box-shadow: var(--shadow-sm);
  }
 
  .input {
@@ -690,7 +696,8 @@
      /* Conteneur pour les actions de l'en-tête (recherche, timer, etc.) */
      .app-header .flex.items-center.gap-4:last-child {
          flex-wrap: wrap;
-         justify-content: flex-start;
+         justify-content: space-around; /* Distribuer l'espace */
+         gap: var(--spacing-sm); /* Réduire le gap pour plus de place */
      }
 
      /* La barre de recherche prend toute la largeur */
@@ -921,14 +928,21 @@
      overflow: hidden;
      white-space: nowrap;
      text-overflow: ellipsis;
+     cursor: pointer; /* Ajouter un curseur pointer pour indiquer l'interactivité */
  }
 
  .nav-item:hover,
  .filter-item:hover {
      background: var(--bg-tertiary);
-     color: var(--text-primary);
-     transform: translateX(8px);
-     box-shadow: var(--shadow-sm);
+     color: var(--primary-color); /* Changer la couleur du texte au survol */
+     transform: translateX(8px) scale(1.02); /* Effet de glissement et léger agrandissement */
+     box-shadow: var(--shadow-md); /* Ombre plus prononcée */
+ }
+
+ .nav-item:active,
+ .filter-item:active {
+     transform: translateX(4px) scale(0.98); /* Léger enfoncement au clic */
+     background: var(--primary-color)20; /* Couleur de fond au clic */
  }
 
  .nav-item::before,
@@ -951,6 +965,8 @@
  .nav-item.active {
      background: var(--primary-color);
      color: var(--text-light);
+     font-weight: 600; /* Rendre le texte actif plus gras */
+     box-shadow: var(--shadow-md); /* Ajouter une ombre à l'élément actif */
  }
 
  /* Styles pour les tâches */
@@ -1010,6 +1026,44 @@
          justify-content: center;
          margin-top: var(--spacing-sm);
          min-height: 44px;
+     }
+
+     /* Amélioration des éléments de tâche pour mobile */
+     .task-item {
+         flex-direction: column;
+         align-items: flex-start;
+         gap: var(--spacing-md);
+     }
+
+     .task-title {
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         max-width: 100%; /* Assurer que le titre ne déborde pas */
+     }
+
+     .task-description {
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         max-width: 100%; /* Assurer que la description ne déborde pas */
+     }
+
+     .task-actions {
+         opacity: 1; /* Toujours visible sur mobile */
+         width: 100%;
+         justify-content: flex-start;
+         flex-wrap: wrap;
+         gap: var(--spacing-sm);
+         margin-top: var(--spacing-sm);
+     }
+
+     .task-item:hover .task-actions {
+         opacity: 1; /* Maintenir l'opacité */
+     }
+
+     .task-content {
+         width: 100%;
      }
  }
 
