@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TodoList Pro - Application de Productivité Avancée</title>
-
+    <title>TodoList Pro</title>
+    <link rel="shortcut icon" href="./task-icon.png" type="image/x-icon">
     <!-- Google Fonts - Roboto -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,9 @@
     <!-- Écran de chargement -->
     <div id="loading-screen" class="loading-screen">
         <div class="loading-content">
-            <div class="loading-logo">📋</div>
+            <div class="loading-logo"><img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiViquTVNf5gqaLzyGE_NwLWcfKsUf3I4xIQ&s"
+                    alt="Logo de l'app" srcset=""></div>
             <h2 class="loading-title">TodoList Pro</h2>
             <div class="loading-spinner"></div>
             <p class="loading-text">Chargement de votre espace de productivité...</p>
@@ -36,18 +38,21 @@
     <div class="app-container" id="app" style="opacity: 0; transition: opacity 0.8s ease-out;">
         <!-- Header -->
         <header class="app-header" role="banner">
-            <div class="flex items-center gap-4">
-                <button class="btn btn-secondary btn-icon hamburger-btn" id="sidebar-toggle"
-                    aria-label="Ouvrir/fermer la barre latérale" aria-expanded="true" aria-controls="sidebar">
-                    <i class="fas fa-bars" aria-hidden="true"></i>
-                </button>
-                <div class="app-logo-container">
-                    <div class="app-logo"><i class="fas fa-clipboard-list"></i></div>
-                    <h1 class="app-title">TodoList Pro</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 2px;">
+                <div class="flex items-center gap-4">
+                    <button class="btn btn-secondary btn-icon hamburger-btn" id="sidebar-toggle"
+                        aria-label="Ouvrir/fermer la barre latérale" aria-expanded="true" aria-controls="sidebar">
+                        <i class="fas fa-bars" aria-hidden="true"></i>
+                    </button>
+                    <div class="app-logo-container">
+                        <div class="app-logo"><i class="fas fa-clipboard-list"></i></div>
+                        <h1 class="app-title">TodoList Pro</h1>
+                    </div>
                 </div>
+
             </div>
 
-            <div class="flex items-center gap-4">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 2px;">
                 <!-- Barre de recherche -->
                 <div class="search-container" role="search">
                     <label for="search-input" class="sr-only">Rechercher dans les tâches</label>
@@ -58,16 +63,17 @@
                         <i class="fas fa-times" aria-hidden="true"></i>
                     </button>
                 </div>
-
                 <!-- Timer Pomodoro -->
                 <div class="pomodoro-timer" id="pomodoro-timer">
                     <span class="timer-display" id="timer-display">25:00</span>
                     <button class="btn btn-secondary btn-icon" id="timer-toggle" title="Démarrer/Arrêter le timer"><i
                             class="fas fa-play"></i></button>
                 </div>
+            </div>
 
+            <div class="flex items-center gap-4">
                 <div class="stats-summary" id="stats-summary">
-                    <span class="text-sm text-muted">0 tâches</span>
+                    <span class="text-sm text-center">0 tâches</span>
                 </div>
                 <button class="btn btn-secondary btn-icon" id="focus-mode-toggle" title="Mode Focus"><i
                         class="fas fa-bullseye"></i></button>
@@ -196,7 +202,7 @@
                             </select>
                             <input type="date" class="input" id="task-due-date" style="width: auto;">
                         </div>
-                        <button class="btn btn-primary" id="add-task-btn">
+                        <button class="btn btn-primary" id="add-task-btn" style="width: auto;">
                             Ajouter
                         </button>
                     </div>
@@ -221,8 +227,9 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-secondary text-xs" id="toggle-advanced" style="margin-top: 8px; width:100px;">
-                        <i class="fas fa-cog"></i> <p>Options avancées</p>
+                    <button class="btn btn-secondary text-xs" id="toggle-advanced" style="margin-top: 8px;">
+                        <i class="fas fa-cog"></i>
+                        <p>Options avancées</p>
                     </button>
                 </div>
                 <!-- Zone principale des tâches -->
