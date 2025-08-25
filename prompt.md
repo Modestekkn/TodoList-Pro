@@ -237,4 +237,4 @@ Créer une **application web to-do list personnelle ultra-moderne** et complète
 
 ---
 
-*Dernière mise à jour : Juin 2025* 
+*Dernière mise à jour : Août 2025* 
