@@ -108,6 +108,24 @@ h1, h2, h3, h4, h5, h6, .app-title, .sidebar-title, .kanban-title {
     transition: var(--transition-normal);
 }
 
+/* Quand le sidebar est masqué, la vue principale occupe tout l'espace */
+.app-container.sidebar-collapsed {
+    grid-template-areas:
+        "header"
+        "main";
+    grid-template-columns: 1fr;
+}
+
+.app-container.sidebar-collapsed .app-sidebar {
+    display: none;
+}
+
+/* Animation fluide pour l'expansion de la vue principale */
+.app-header,
+.app-main {
+    transition: all var(--transition-normal);
+}
+
 .app-header {
     grid-area: header;
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
@@ -764,8 +782,7 @@ body::-webkit-scrollbar {
 
     /* Amélioration de la saisie des tâches pour mobile */
     .task-options {
-        flex-direction: column;
-        width: 100%;
+        grid-template-columns: 1fr;
         gap: var(--spacing-sm);
     }
 
@@ -995,6 +1012,13 @@ body::-webkit-scrollbar {
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-md);
     margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--bg-tertiary);
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.task-input-section:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
 }
 
 .task-input-container {
@@ -1009,18 +1033,6 @@ body::-webkit-scrollbar {
     .task-input-container {
         flex-direction: column;
         gap: var(--spacing-sm);
-    }
-
-    .task-options {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-sm);
-        width: 100%;
-    }
-
-    .task-options select {
-        width: 100% !important;
-        min-height: 44px;
     }
 
     .task-input-section {
@@ -1092,15 +1104,152 @@ body::-webkit-scrollbar {
 }
 
 .task-options {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: var(--spacing-md);
+}
+
+.form-row {
     display: flex;
     gap: var(--spacing-sm);
+    align-items: flex-end;
+    min-height: 80px;
+}
+
+.form-row .input {
+    flex: 1;
+}
+
+.form-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 2px;
+}
+
+.form-label i {
+    font-size: 0.8rem;
+    width: 14px;
+    text-align: center;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.input-icon {
+    position: absolute;
+    left: 12px;
+    color: var(--text-muted);
+    z-index: 1;
+    font-size: 1.1rem;
+}
+
+.input-with-icon .input {
+    padding-left: 40px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    transition: all var(--transition-fast);
+}
+
+.toggle-btn:hover {
+    background: var(--bg-tertiary);
+}
+
+.toggle-icon {
+    margin-left: auto;
+    transition: transform var(--transition-fast);
+}
+
+.toggle-btn.expanded .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.buttons-row {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+    margin-top: var(--spacing-md);
+}
+
+.buttons-row .btn-primary {
+    width: 50%;
+    min-height: 44px;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.buttons-row .toggle-btn {
+    width: 50%;
+    white-space: nowrap;
+    min-height: 44px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.875rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--bg-tertiary);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.buttons-row .toggle-btn:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-color: var(--primary-color);
 }
 
 .task-options input[type="time"] {
     min-width: 120px;
     font-size: 0.9rem;
+}
+
+/* Améliorations de focus pour l'accessibilité */
+.input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.2);
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.3);
+}
+
+/* Animation pour les form-fields */
+.form-field {
+    transition: transform var(--transition-fast);
+}
+
+.form-field:focus-within {
+    transform: translateY(-2px);
+}
+
+.form-field:focus-within .form-label {
+    color: var(--primary-color);
 }
 
 .task-time-range {
@@ -1121,16 +1270,21 @@ body::-webkit-scrollbar {
     gap: var(--spacing-sm);
 }
 
-.time-group span {
+.time-group span,
+.time-separator {
     color: var(--text-muted);
     font-size: 0.9rem;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .advanced-options {
     margin-top: var(--spacing-md);
     padding-top: var(--spacing-md);
     border-top: 1px solid var(--bg-tertiary);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
 }
 
 .advanced-row {
@@ -3351,25 +3505,55 @@ select:focus-visible,
     }
 
     .task-options {
-        gap: var(--spacing-xs);
-        flex-direction: column;
-        align-items: stretch;
+        grid-template-columns: 1fr !important;
+        gap: var(--spacing-md);
     }
 
+    .form-field {
+        width: 100%;
+    }
+
+    .form-row .input,
     .task-options input,
     .task-options select {
         width: 100% !important;
         min-width: auto !important;
     }
 
+    .input-with-icon .input {
+        font-size: 16px; /* Évite le zoom sur iOS */
+        padding: 14px 40px 14px 40px;
+    }
+
+    .form-label {
+        font-size: 0.95rem;
+    }
+
+    .buttons-row {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        align-items: stretch;
+    }
+
+    .buttons-row .btn-primary,
+    .buttons-row .toggle-btn {
+        width: 100%;
+        justify-content: center;
+        min-height: 48px; /* Taille tactile plus grande sur mobile */
+    }
+
     .task-options input[type="time"] {
         min-width: 100px;
     }
 
-    /* Groupe les champs d'horaire sur une ligne */
+    /* Garde le groupe d'horaire sur une ligne même sur mobile */
     .time-group {
-        display: flex;
+        flex-direction: row !important;
         gap: var(--spacing-xs);
+    }
+
+    .time-group .input {
+        flex: 1;
     }
 
     .task-input-container {

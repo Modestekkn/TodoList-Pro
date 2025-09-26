@@ -139,20 +139,20 @@
                         <!-- Les statistiques seront générées dynamiquement -->
                     </div>
                     <button class="btn btn-secondary text-xs mt-2" id="show-detailed-stats">
-                        📊 Voir les détails
+                        <i class="fas fa-chart-bar"></i> Voir les détails
                     </button>
                 </div>
 
                 <!-- IA et Gamification -->
                 <div class="ai-suggestions">
-                    <h3 class="font-medium text-sm text-muted mb-2 mt-4">🤖 SUGGESTIONS IA</h3>
+                    <h3 class="font-medium text-sm text-muted mb-2 mt-4"><i class="fas fa-robot"></i> SUGGESTIONS IA</h3>
                     <div class="suggestions-container" id="ai-suggestions">
                         <!-- Les suggestions seront générées dynamiquement -->
                     </div>
                 </div>
 
                 <div class="daily-challenge">
-                    <h3 class="font-medium text-sm text-muted mb-2 mt-4">🎯 DÉFI DU JOUR</h3>
+                    <h3 class="font-medium text-sm text-muted mb-2 mt-4"><i class="fas fa-bullseye"></i> DÉFI DU JOUR</h3>
                     <div class="challenge-container" id="daily-challenge">
                         <!-- Le défi sera généré dynamiquement -->
                     </div>
@@ -185,41 +185,84 @@
                 <!-- Zone d'ajout de tâche -->
                 <div class="task-input-section">
                     <div class="task-input-container">
-                        <input type="text" class="input" id="task-input" placeholder="Ajouter une nouvelle tâche..."
-                            autocomplete="off">
+                        <div class="input-with-icon">
+                            <i class="fas fa-plus-circle input-icon"></i>
+                            <input type="text" class="input" id="task-input" placeholder="Ajouter une nouvelle tâche..."
+                                autocomplete="off">
+                        </div>
                         <div class="task-options">
-                            <select class="input" id="task-priority" style="width: auto;">
-                                <option value="normal"><i class="fas fa-circle text-blue"></i> Normal</option>
-                                <option value="low"><i class="fas fa-circle text-green"></i> Basse</option>
-                                <option value="high"><i class="fas fa-circle text-orange"></i> Haute</option>
-                                <option value="critical"><i class="fas fa-circle text-red"></i> Critique</option>
-                            </select>
-                            <select class="input" id="task-category" style="width: auto;">
-                                <option value="">Aucune catégorie</option>
-                            </select>
-                            <input type="date" class="input" id="task-due-date" style="width: auto;">
-                            <div class="time-group">
-                                <input type="time" class="input" id="task-start-time" style="width: auto;" placeholder="Heure début" title="Heure de début">
-                                <span style="align-self: center; color: var(--text-muted); font-size: 0.9rem;">à</span>
-                                <input type="time" class="input" id="task-end-time" style="width: auto;" placeholder="Heure fin" title="Heure de fin">
+                            <div class="form-field">
+                                <label for="task-priority" class="form-label">
+                                    <i class="fas fa-flag"></i> Priorité
+                                </label>
+                                <select class="input" id="task-priority">
+                                    <option value="normal">🔵 Normal</option>
+                                    <option value="low">🟢 Basse</option>
+                                    <option value="high">🟠 Haute</option>
+                                    <option value="critical">🔴 Critique</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label for="task-category" class="form-label">
+                                    <i class="fas fa-folder"></i> Catégorie
+                                </label>
+                                <select class="input" id="task-category">
+                                    <option value="">Aucune catégorie</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label for="task-due-date" class="form-label">
+                                    <i class="fas fa-calendar-alt"></i> Date d'échéance
+                                </label>
+                                <input type="date" class="input" id="task-due-date">
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label">
+                                    <i class="fas fa-clock"></i> Horaires
+                                </label>
+                                <div class="time-group">
+                                    <input type="time" class="input" id="task-start-time" title="Heure de début">
+                                    <span class="time-separator">à</span>
+                                    <input type="time" class="input" id="task-end-time" title="Heure de fin">
+                                </div>
                             </div>
                         </div>
-                        <button class="btn btn-primary" id="add-task-btn" style="width: auto;">
-                            Ajouter
-                        </button>
+                        <div class="buttons-row">
+                            <button class="btn btn-primary" id="add-task-btn">
+                                <i class="fas fa-plus"></i> Ajouter la tâche
+                            </button>
+                            <button class="btn btn-secondary text-xs toggle-btn" id="toggle-advanced">
+                                <i class="fas fa-cog"></i>
+                                <span>Options avancées</span>
+                                <i class="fas fa-chevron-down toggle-icon"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Options avancées (masquées par défaut) -->
                     <div class="advanced-options hidden" id="advanced-options">
-                        <div class="advanced-row">
-                            <input type="text" class="input" id="task-description"
-                                placeholder="Description (optionnelle)">
-                            <input type="text" class="input" id="task-tags"
-                                placeholder="Tags (séparés par des virgules)">
+                        <div class="form-field">
+                            <label for="task-description" class="form-label">
+                                <i class="fas fa-align-left"></i> Description
+                            </label>
+                            <input type="text" class="input" id="task-description" placeholder="Description de la tâche...">
                         </div>
-                        <div class="advanced-row">
-                            <input type="number" class="input" id="task-estimated-time"
-                                placeholder="Temps estimé (minutes)" min="1">
+                        <div class="form-field">
+                            <label for="task-tags" class="form-label">
+                                <i class="fas fa-tags"></i> Tags
+                            </label>
+                            <input type="text" class="input" id="task-tags" placeholder="tag1, tag2, tag3...">
+                        </div>
+                        <div class="form-field">
+                            <label for="task-estimated-time" class="form-label">
+                                <i class="fas fa-hourglass-half"></i> Temps estimé
+                            </label>
+                            <input type="number" class="input" id="task-estimated-time" placeholder="En minutes" min="1">
+                        </div>
+                        <div class="form-field">
+                            <label for="task-recurring" class="form-label">
+                                <i class="fas fa-redo"></i> Récurrence
+                            </label>
                             <select class="input" id="task-recurring">
                                 <option value="">Pas de récurrence</option>
                                 <option value="daily">Quotidien</option>
@@ -228,11 +271,6 @@
                             </select>
                         </div>
                     </div>
-
-                    <button class="btn btn-secondary text-xs" id="toggle-advanced" style="margin-top: 8px;">
-                        <i class="fas fa-cog"></i>
-                        <p>Options avancées</p>
-                    </button>
                 </div>
                 <!-- Zone principale des tâches -->
                 <div class="tasks-container" id="tasks-container">
@@ -484,6 +522,15 @@
                 if (savedState) {
                     this.state = { ...this.state, ...JSON.parse(savedState) };
                 }
+
+                // Restaurer l'état du sidebar
+                const sidebarCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+                if (sidebarCollapsed && window.innerWidth > 768) {
+                    const sidebar = document.getElementById('sidebar');
+                    const container = document.getElementById('app');
+                    sidebar.classList.add('hidden');
+                    container.classList.add('sidebar-collapsed');
+                }
             }
 
             saveState() {
@@ -542,6 +589,7 @@
             toggleSidebar() {
                 const sidebar = document.getElementById('sidebar');
                 const overlay = document.getElementById('sidebar-overlay');
+                const container = document.getElementById('app');
                 const isMobile = window.innerWidth <= 768;
 
                 if (isMobile) {
@@ -549,6 +597,12 @@
                     overlay.classList.toggle('active');
                 } else {
                     sidebar.classList.toggle('hidden');
+                    // Ajouter classe au container pour faciliter le CSS
+                    container.classList.toggle('sidebar-collapsed');
+                    
+                    // Sauvegarder l'état du sidebar
+                    const isCollapsed = sidebar.classList.contains('hidden');
+                    localStorage.setItem('sidebar-collapsed', isCollapsed.toString());
                 }
             }
 
@@ -900,10 +954,10 @@ Escape - Effacer recherche/Sortir du mode focus
                 const container = document.getElementById('tasks-container');
 
                 const columns = [
-                    { id: 'todo', title: '📋 À faire', filter: (task) => !task.completed && !task.dependencies?.some(depId => !this.state.tasks.find(t => t.id === depId)?.completed) },
-                    { id: 'in-progress', title: '🔄 En cours', filter: (task) => !task.completed && task.actualTime > 0 },
-                    { id: 'blocked', title: '🚫 Bloquées', filter: (task) => !task.completed && !this.canCompleteTask(task) },
-                    { id: 'done', title: '✅ Terminées', filter: (task) => task.completed }
+                    { id: 'todo', title: '<i class="fas fa-tasks"></i> À faire', filter: (task) => !task.completed && !task.dependencies?.some(depId => !this.state.tasks.find(t => t.id === depId)?.completed) },
+                    { id: 'in-progress', title: '<i class="fas fa-spinner"></i> En cours', filter: (task) => !task.completed && task.actualTime > 0 },
+                    { id: 'blocked', title: '<i class="fas fa-ban"></i> Bloquées', filter: (task) => !task.completed && !this.canCompleteTask(task) },
+                    { id: 'done', title: '<i class="fas fa-check-circle"></i> Terminées', filter: (task) => task.completed }
                 ];
 
                 let kanbanHTML = '<div class="kanban-board">';
@@ -947,12 +1001,12 @@ Escape - Effacer recherche/Sortir du mode focus
                         </div>
                         ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
                         ${dueDateInfo}
-                        ${task.timeRange ? `<div class="task-time-range">🕐 ${task.timeRange}</div>` : ''}
+                        ${task.timeRange ? `<div class="task-time-range"><i class="fas fa-clock"></i> ${task.timeRange}</div>` : ''}
                         ${task.subtasks.length > 0 ? `<div class="task-subtasks-count">${task.subtasks.filter(st => st.completed).length}/${task.subtasks.length} sous-tâches</div>` : ''}
                         <div class="task-actions" style="opacity: 1; margin-top: 8px;">
-                            <button class="btn-icon" onclick="app.editTask('${task.id}')" title="Modifier">✏️</button>
+                            <button class="btn-icon" onclick="app.editTask('${task.id}')" title="Modifier"><i class="fas fa-edit"></i></button>
                             <button class="btn-icon" onclick="app.toggleTask('${task.id}')" title="${task.completed ? 'Marquer comme non terminée' : 'Marquer comme terminée'}">
-                                ${task.completed ? '↩️' : '✅'}
+                                <i class="fas ${task.completed ? 'fa-undo' : 'fa-check'}"></i>
                             </button>
                         </div>
                     </div>
@@ -1055,9 +1109,9 @@ Escape - Effacer recherche/Sortir du mode focus
                                 ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
                                 ${task.subtasks.length > 0 ? `<div class="task-subtasks-count">${task.subtasks.filter(st => st.completed).length}/${task.subtasks.length} sous-tâches</div>` : ''}
                                 <div class="task-actions" style="margin-top: 8px;">
-                                    <button class="btn-icon" onclick="app.editTask('${task.id}')" title="Modifier">✏️</button>
+                                    <button class="btn-icon" onclick="app.editTask('${task.id}')" title="Modifier"><i class="fas fa-edit"></i></button>
                                     <button class="btn-icon" onclick="app.toggleTask('${task.id}')" title="${task.completed ? 'Marquer comme non terminée' : 'Marquer comme terminée'}">
-                                        ${task.completed ? '↩️' : '✅'}
+                                        <i class="fas ${task.completed ? 'fa-undo' : 'fa-check'}"></i>
                                     </button>
                                 </div>
                             </div>
@@ -1158,10 +1212,20 @@ Escape - Effacer recherche/Sortir du mode focus
 
                 if (advancedOptions.classList.contains('hidden')) {
                     advancedOptions.classList.remove('hidden');
-                    toggleBtn.innerHTML = `<i class="fas fa-cog"></i> <p style='width: 100%;'>Masquer les options</p>`;
+                    toggleBtn.innerHTML = `
+                        <i class="fas fa-cog"></i>
+                        <span>Masquer les options</span>
+                        <i class="fas fa-chevron-up toggle-icon"></i>
+                    `;
+                    toggleBtn.classList.add('expanded');
                 } else {
                     advancedOptions.classList.add('hidden');
-                    toggleBtn.innerHTML = `<i class="fas fa-cog"></i> <p style='width: 100%;'>Options avancées</p>`;
+                    toggleBtn.innerHTML = `
+                        <i class="fas fa-cog"></i>
+                        <span>Options avancées</span>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    `;
+                    toggleBtn.classList.remove('expanded');
                 }
             }
 
@@ -1322,7 +1386,13 @@ Escape - Effacer recherche/Sortir du mode focus
 
                 // Masquer les options avancées
                 document.getElementById('advanced-options').classList.add('hidden');
-                document.getElementById('toggle-advanced').textContent = '⚙️ Options avancées';
+                const toggleBtn = document.getElementById('toggle-advanced');
+                toggleBtn.innerHTML = `
+                    <i class="fas fa-cog"></i>
+                    <span>Options avancées</span>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                `;
+                toggleBtn.classList.remove('expanded');
             }
 
             animateTaskAdd() {
@@ -1441,7 +1511,7 @@ Escape - Effacer recherche/Sortir du mode focus
                             <span class="category-name">${category.name}</span>
                             <span class="category-count">${this.getTaskCountByCategory(category.id)}</span>
                         </div>
-                        <button class="btn-icon" onclick="app.deleteCategory('${category.id}')" title="Supprimer">🗑️</button>
+                        <button class="btn-icon" onclick="app.deleteCategory('${category.id}')" title="Supprimer"><i class="fas fa-trash"></i></button>
                     `;
                     categoryList.appendChild(categoryItem);
                 });
@@ -1638,20 +1708,20 @@ Escape - Effacer recherche/Sortir du mode focus
                             </div>
                             ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
                             ${dueDateInfo}
-                            ${task.timeRange ? `<div class="task-time-range">🕐 ${task.timeRange}</div>` : ''}
+                            ${task.timeRange ? `<div class="task-time-range"><i class="fas fa-clock"></i> ${task.timeRange}</div>` : ''}
                             ${task.subtasks.length > 0 ? `<div class="task-subtasks-count">${task.subtasks.filter(st => st.completed).length}/${task.subtasks.length} sous-tâches</div>` : ''}
-                            ${task.dependencies.length > 0 ? `<div class="task-dependencies">🔗 ${task.dependencies.length} dépendance(s)</div>` : ''}
+                            ${task.dependencies.length > 0 ? `<div class="task-dependencies"><i class="fas fa-link"></i> ${task.dependencies.length} dépendance(s)</div>` : ''}
                         </div>
                     </div>
                     <div class="task-actions">
-                        <button class="btn-icon" onclick="app.addSubtask('${task.id}')" title="Ajouter sous-tâche">➕</button>
-                        <button class="btn-icon" onclick="app.manageDependencies('${task.id}')" title="Gérer dépendances">🔗</button>
+                        <button class="btn-icon" onclick="app.addSubtask('${task.id}')" title="Ajouter sous-tâche"><i class="fas fa-plus"></i></button>
+                        <button class="btn-icon" onclick="app.manageDependencies('${task.id}')" title="Gérer dépendances"><i class="fas fa-link"></i></button>
                         <button class="btn-icon" onclick="app.toggleFavorite('${task.id}')" title="Favoris">
-                            ${task.favorite ? '⭐' : '☆'}
+                            <i class="fas ${task.favorite ? 'fa-star' : 'fa-star'}" style="color: ${task.favorite ? '#f59e0b' : '#94a3b8'}"></i>
                         </button>
-                        <button class="btn-icon" onclick="app.editTask('${task.id}')" title="Modifier">✏️</button>
-                        <button class="btn-icon" onclick="app.duplicateTask('${task.id}')" title="Dupliquer">📋</button>
-                        <button class="btn-icon" onclick="app.deleteTask('${task.id}')" title="Supprimer">🗑️</button>
+                        <button class="btn-icon" onclick="app.editTask('${task.id}')" title="Modifier"><i class="fas fa-edit"></i></button>
+                        <button class="btn-icon" onclick="app.duplicateTask('${task.id}')" title="Dupliquer"><i class="fas fa-copy"></i></button>
+                        <button class="btn-icon" onclick="app.deleteTask('${task.id}')" title="Supprimer"><i class="fas fa-trash"></i></button>
                     </div>
                 `;
 
