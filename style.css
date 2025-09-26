@@ -782,7 +782,8 @@ body::-webkit-scrollbar {
 
     /* Amélioration de la saisie des tâches pour mobile */
     .task-options {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        width: 100%;
         gap: var(--spacing-sm);
     }
 
@@ -1035,6 +1036,18 @@ body::-webkit-scrollbar {
         gap: var(--spacing-sm);
     }
 
+    .task-options {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        width: 100%;
+    }
+
+    .task-options select {
+        width: 100% !important;
+        min-height: 44px;
+    }
+
     .task-input-section {
         padding: var(--spacing-md);
     }
@@ -1104,16 +1117,16 @@ body::-webkit-scrollbar {
 }
 
 .task-options {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
 }
 
 .form-row {
     display: flex;
     gap: var(--spacing-sm);
-    align-items: flex-end;
-    min-height: 80px;
+    align-items: flex-start;
+    width: 100%;
 }
 
 .form-row .input {
@@ -1125,6 +1138,14 @@ body::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 0; /* Permet le shrinking sur mobile */
+}
+
+/* Assure une hauteur uniforme pour tous les inputs dans une form-row */
+.form-row .input,
+.form-row select,
+.time-group {
+    min-height: 42px;
 }
 
 .form-label {
@@ -1193,14 +1214,12 @@ body::-webkit-scrollbar {
 }
 
 .buttons-row .btn-primary {
-    width: 50%;
+    flex: 1;
     min-height: 44px;
-    font-weight: 600;
-    font-size: 1rem;
 }
 
 .buttons-row .toggle-btn {
-    width: 50%;
+    flex-shrink: 0;
     white-space: nowrap;
     min-height: 44px;
     padding: var(--spacing-sm) var(--spacing-md);
@@ -1282,9 +1301,20 @@ body::-webkit-scrollbar {
     margin-top: var(--spacing-md);
     padding-top: var(--spacing-md);
     border-top: 1px solid var(--bg-tertiary);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-md);
+}
+
+.advanced-options-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.advanced-options-title i {
+    color: var(--primary-color);
 }
 
 .advanced-row {
@@ -3505,7 +3535,11 @@ select:focus-visible,
     }
 
     .task-options {
-        grid-template-columns: 1fr !important;
+        gap: var(--spacing-xs);
+    }
+
+    .form-row {
+        flex-direction: column;
         gap: var(--spacing-md);
     }
 
@@ -3838,6 +3872,26 @@ select:focus-visible,
 
     .app-header {
         padding: var(--spacing-xs) var(--spacing-md);
+    }
+}
+
+/* Media queries pour tablettes */
+@media (max-width: 900px) and (min-width: 769px) {
+    .form-row {
+        gap: var(--spacing-md);
+    }
+    
+    .form-field {
+        flex: 1;
+        min-width: 250px;
+    }
+    
+    .task-options {
+        gap: var(--spacing-sm);
+    }
+    
+    .advanced-options {
+        padding: var(--spacing-md);
     }
 }
 

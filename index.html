@@ -191,39 +191,43 @@
                                 autocomplete="off">
                         </div>
                         <div class="task-options">
-                            <div class="form-field">
-                                <label for="task-priority" class="form-label">
-                                    <i class="fas fa-flag"></i> Priorité
-                                </label>
-                                <select class="input" id="task-priority">
-                                    <option value="normal">🔵 Normal</option>
-                                    <option value="low">🟢 Basse</option>
-                                    <option value="high">🟠 Haute</option>
-                                    <option value="critical">🔴 Critique</option>
-                                </select>
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="task-priority" class="form-label">
+                                        <i class="fas fa-flag"></i> Priorité
+                                    </label>
+                                    <select class="input" id="task-priority">
+                                        <option value="normal">🔵 Normal</option>
+                                        <option value="low">🟢 Basse</option>
+                                        <option value="high">🟠 Haute</option>
+                                        <option value="critical">🔴 Critique</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="task-category" class="form-label">
+                                        <i class="fas fa-folder"></i> Catégorie
+                                    </label>
+                                    <select class="input" id="task-category">
+                                        <option value="">Aucune catégorie</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-field">
-                                <label for="task-category" class="form-label">
-                                    <i class="fas fa-folder"></i> Catégorie
-                                </label>
-                                <select class="input" id="task-category">
-                                    <option value="">Aucune catégorie</option>
-                                </select>
-                            </div>
-                            <div class="form-field">
-                                <label for="task-due-date" class="form-label">
-                                    <i class="fas fa-calendar-alt"></i> Date d'échéance
-                                </label>
-                                <input type="date" class="input" id="task-due-date">
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">
-                                    <i class="fas fa-clock"></i> Horaires
-                                </label>
-                                <div class="time-group">
-                                    <input type="time" class="input" id="task-start-time" title="Heure de début">
-                                    <span class="time-separator">à</span>
-                                    <input type="time" class="input" id="task-end-time" title="Heure de fin">
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="task-due-date" class="form-label">
+                                        <i class="fas fa-calendar-alt"></i> Date d'échéance
+                                    </label>
+                                    <input type="date" class="input" id="task-due-date">
+                                </div>
+                                <div class="form-field">
+                                    <label class="form-label">
+                                        <i class="fas fa-clock"></i> Horaires
+                                    </label>
+                                    <div class="time-group">
+                                        <input type="time" class="input" id="task-start-time" title="Heure de début">
+                                        <span class="time-separator">à</span>
+                                        <input type="time" class="input" id="task-end-time" title="Heure de fin">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -241,34 +245,41 @@
 
                     <!-- Options avancées (masquées par défaut) -->
                     <div class="advanced-options hidden" id="advanced-options">
-                        <div class="form-field">
-                            <label for="task-description" class="form-label">
-                                <i class="fas fa-align-left"></i> Description
-                            </label>
-                            <input type="text" class="input" id="task-description" placeholder="Description de la tâche...">
+                        <h4 class="advanced-options-title">
+                            <i class="fas fa-cog"></i> Options avancées
+                        </h4>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="task-description" class="form-label">
+                                    <i class="fas fa-align-left"></i> Description
+                                </label>
+                                <input type="text" class="input" id="task-description" placeholder="Description de la tâche...">
+                            </div>
+                            <div class="form-field">
+                                <label for="task-tags" class="form-label">
+                                    <i class="fas fa-tags"></i> Tags
+                                </label>
+                                <input type="text" class="input" id="task-tags" placeholder="tag1, tag2, tag3...">
+                            </div>
                         </div>
-                        <div class="form-field">
-                            <label for="task-tags" class="form-label">
-                                <i class="fas fa-tags"></i> Tags
-                            </label>
-                            <input type="text" class="input" id="task-tags" placeholder="tag1, tag2, tag3...">
-                        </div>
-                        <div class="form-field">
-                            <label for="task-estimated-time" class="form-label">
-                                <i class="fas fa-hourglass-half"></i> Temps estimé
-                            </label>
-                            <input type="number" class="input" id="task-estimated-time" placeholder="En minutes" min="1">
-                        </div>
-                        <div class="form-field">
-                            <label for="task-recurring" class="form-label">
-                                <i class="fas fa-redo"></i> Récurrence
-                            </label>
-                            <select class="input" id="task-recurring">
-                                <option value="">Pas de récurrence</option>
-                                <option value="daily">Quotidien</option>
-                                <option value="weekly">Hebdomadaire</option>
-                                <option value="monthly">Mensuel</option>
-                            </select>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="task-estimated-time" class="form-label">
+                                    <i class="fas fa-hourglass-half"></i> Temps estimé (min)
+                                </label>
+                                <input type="number" class="input" id="task-estimated-time" placeholder="En minutes" min="1">
+                            </div>
+                            <div class="form-field">
+                                <label for="task-recurring" class="form-label">
+                                    <i class="fas fa-redo"></i> Récurrence
+                                </label>
+                                <select class="input" id="task-recurring">
+                                    <option value="">Pas de récurrence</option>
+                                    <option value="daily">Quotidien</option>
+                                    <option value="weekly">Hebdomadaire</option>
+                                    <option value="monthly">Mensuel</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
