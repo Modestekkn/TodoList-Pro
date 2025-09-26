@@ -36,9 +36,9 @@
     --spacing-xl: 2rem;
     --spacing-2xl: 3rem;
 
-    /* Bordures */
-    --border-radius: 0.5rem;
-    --border-radius-lg: 1rem;
+    /* Bordures - Réduites pour un design plus moderne */
+    --border-radius: 0.25rem;      /* Réduit de 50% : 8px -> 4px */
+    --border-radius-lg: 0.5rem;    /* Réduit de 50% : 16px -> 8px */
     --border-width: 1px;
 
     /* Ombres */
@@ -381,16 +381,6 @@ body::-webkit-scrollbar {
     box-shadow: var(--shadow-md);
 }
 
-/* Boutons avec icônes seulement - largeur réduite pour meilleur centrage */
-.btn:has(i:only-child) {
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-}
 
 .btn:has(i:only-child) i {
     margin: 0;
@@ -756,7 +746,7 @@ body::-webkit-scrollbar {
     .hamburger-btn {
         width: 44px;
         height: 44px;
-        border-radius: 12px;
+        border-radius: 6px;
         background: var(--bg-secondary);
         border: 1px solid var(--bg-tertiary);
         color: var(--text-primary);
@@ -1009,12 +999,18 @@ body::-webkit-scrollbar {
 /* Styles pour les tâches */
 .task-input-section {
     background: var(--bg-primary);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-md);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-md);
     margin-bottom: var(--spacing-lg);
     border: 1px solid var(--bg-tertiary);
     transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+@media (min-width: 768px) {
+    .task-input-section {
+        padding: var(--spacing-lg);
+    }
 }
 
 .task-input-section:hover {
@@ -1023,10 +1019,31 @@ body::-webkit-scrollbar {
 }
 
 .task-input-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: var(--spacing-md);
     align-items: flex-start;
-    flex-wrap: wrap;
+}
+
+/* Layout responsive en deux colonnes sur desktop */
+@media (min-width: 768px) {
+    .task-input-container {
+        display: flex;
+        gap: var(--spacing-md);
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+    
+    .task-input-container .input-with-icon {
+        flex: 2;
+        min-width: 300px;
+        margin-bottom: 0;
+    }
+    
+    .task-options {
+        flex: 1;
+        min-width: 250px;
+    }
 }
 
 /* Disposition mobile du formulaire */
@@ -1122,11 +1139,41 @@ body::-webkit-scrollbar {
     gap: var(--spacing-sm);
 }
 
+/* Système de deux colonnes pour formulaire principal et options avancées */
 .form-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: var(--spacing-sm);
     align-items: flex-start;
     width: 100%;
+}
+
+/* Layout responsive optimisé pour formulaire principal */
+@media (min-width: 768px) {
+    .form-row.main-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: var(--spacing-md);
+        align-items: flex-start;
+        width: 100%;
+    }
+    
+    /* Ligne des horaires prend toute la largeur */
+    .form-row.time-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-sm);
+    }
+    
+    /* Options avancées en 2 colonnes sur desktop */
+    .advanced-options .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-md);
+        align-items: flex-start;
+        width: 100%;
+    }
 }
 
 .form-row .input {
@@ -1139,6 +1186,17 @@ body::-webkit-scrollbar {
     flex-direction: column;
     gap: 4px;
     min-width: 0; /* Permet le shrinking sur mobile */
+}
+
+@media (min-width: 768px) {
+    .form-field {
+        min-width: 150px;
+    }
+    
+    /* Le champ de temps prend plus d'espace */
+    .time-field {
+        grid-column: 1 / -1;
+    }
 }
 
 /* Assure une hauteur uniforme pour tous les inputs dans une form-row */
@@ -1206,24 +1264,43 @@ body::-webkit-scrollbar {
     transform: rotate(180deg);
 }
 
+/* Boutons modernisés et plus compacts */
 .buttons-row {
     display: flex;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
     align-items: center;
     margin-top: var(--spacing-md);
 }
 
+@media (min-width: 768px) {
+    .buttons-row {
+        justify-content: flex-start;
+    }
+}
+
 .buttons-row .btn-primary {
-    flex: 1;
-    min-height: 44px;
+    min-height: 40px;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+    .buttons-row .btn-primary {
+        flex: 1;
+        min-height: 44px;
+    }
 }
 
 .buttons-row .toggle-btn {
     flex-shrink: 0;
     white-space: nowrap;
-    min-height: 44px;
+    min-height: 40px;
     padding: var(--spacing-sm) var(--spacing-md);
     font-size: 0.875rem;
+    font-weight: 500;
     border-radius: var(--border-radius);
     border: 1px solid var(--bg-tertiary);
     background: var(--bg-secondary);
@@ -1231,10 +1308,20 @@ body::-webkit-scrollbar {
     transition: all var(--transition-fast);
 }
 
+@media (max-width: 767px) {
+    .buttons-row .toggle-btn {
+        width: 100%;
+        justify-content: center;
+        margin-top: var(--spacing-sm);
+        min-height: 44px;
+    }
+}
+
 .buttons-row .toggle-btn:hover {
     background: var(--bg-tertiary);
     color: var(--text-primary);
     border-color: var(--primary-color);
+    transform: translateY(-1px);
 }
 
 .task-options input[type="time"] {
@@ -1287,6 +1374,20 @@ body::-webkit-scrollbar {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+    .time-group {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+    }
+}
+
+.time-group .input {
+    flex: 1;
+    min-width: 120px;
+    max-width: 150px;
 }
 
 .time-group span,
@@ -1295,6 +1396,7 @@ body::-webkit-scrollbar {
     font-size: 0.9rem;
     font-weight: 500;
     white-space: nowrap;
+    padding: 0 var(--spacing-xs);
 }
 
 .advanced-options {
@@ -1538,7 +1640,7 @@ body::-webkit-scrollbar {
 .task-category {
     font-size: 0.75rem;
     padding: 2px 6px;
-    border-radius: 12px;
+    border-radius: 6px;
     font-weight: 500;
     margin-left: auto;
 }
@@ -1583,7 +1685,7 @@ body::-webkit-scrollbar {
     color: var(--text-muted);
     background: var(--bg-tertiary);
     padding: 2px 6px;
-    border-radius: 10px;
+    border-radius: 5px;
     display: inline-block;
     margin-right: var(--spacing-xs);
 }
@@ -1661,7 +1763,7 @@ body::-webkit-scrollbar {
 }
 
 .search-input {
-    border-radius: 20px;
+    border-radius: 10px;
     padding-left: var(--spacing-md);
     transition: var(--transition-fast);
 }
@@ -1793,7 +1895,7 @@ body.focus-mode .task-input-section {
     background: var(--bg-tertiary);
     color: var(--text-muted);
     padding: 2px 8px;
-    border-radius: 12px;
+    border-radius: 6px;
     font-size: 0.75rem;
     font-weight: 500;
 }
@@ -2199,7 +2301,7 @@ body.focus-mode .task-input-section {
     background: var(--bg-tertiary);
     color: var(--text-muted);
     padding: 2px 6px;
-    border-radius: 10px;
+    border-radius: 5px;
     min-width: 20px;
     text-align: center;
 }
@@ -2341,18 +2443,6 @@ body.dark-theme {
     --text-muted: #94a3b8;
 }
 
-/* Thème coloré */
-body.colorful-theme {
-    --primary-color: #8b5cf6;
-    --secondary-color: #06d6a0;
-    --accent-color: #ffd60a;
-    --danger-color: #f72585;
-    --warning-color: #ff8500;
-    --bg-primary: #ffffff;
-    --bg-secondary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --bg-tertiary: #f1f5f9;
-}
-
 /* Thème minimaliste */
 body.minimal-theme {
     --primary-color: #000000;
@@ -2364,25 +2454,11 @@ body.minimal-theme {
     --text-primary: #000000;
     --text-secondary: #666666;
     --text-muted: #999999;
-    --border-radius: 0;
+    --border-radius: 0px;
+    --border-radius-lg: 0px;
     --shadow-sm: none;
     --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Thème nature */
-body.nature-theme {
-    --primary-color: #2d5016;
-    --secondary-color: #56ab2f;
-    --accent-color: #a8e6cf;
-    --danger-color: #8b4513;
-    --warning-color: #daa520;
-    --bg-primary: #f0f8e8;
-    --bg-secondary: linear-gradient(to bottom, #a8e6cf, #dcedc1);
-    --bg-tertiary: #e8f5e8;
-    --text-primary: #2d5016;
-    --text-secondary: #4a7c59;
-    --text-muted: #7fb069;
 }
 
 /* Mode zen */
@@ -2658,7 +2734,7 @@ body.zen-mode .task-item:hover .task-actions {
     background: var(--secondary-color)20;
     color: var(--secondary-color);
     padding: 2px 6px;
-    border-radius: 10px;
+    border-radius: 5px;
     font-size: 0.75rem;
     font-weight: 500;
 }
@@ -2869,7 +2945,7 @@ body.zen-mode .task-item:hover .task-actions {
 
 .challenge-progress {
     background: var(--bg-tertiary);
-    border-radius: 10px;
+    border-radius: 5px;
     height: 8px;
     overflow: hidden;
     margin-bottom: var(--spacing-sm);
@@ -2878,7 +2954,7 @@ body.zen-mode .task-item:hover .task-actions {
 .challenge-progress-bar {
     background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
     height: 100%;
-    border-radius: 10px;
+    border-radius: 5px;
     transition: width var(--transition-normal);
 }
 
@@ -2895,7 +2971,7 @@ body.zen-mode .task-item:hover .task-actions {
     background: var(--secondary-color);
     color: white;
     padding: 4px 8px;
-    border-radius: 12px;
+    border-radius: 6px;
     font-size: 0.75rem;
     font-weight: 500;
     margin: 2px;
@@ -3703,14 +3779,14 @@ select:focus-visible,
     .task-item {
         padding: var(--spacing-md);
         margin-bottom: var(--spacing-sm);
-        border-radius: 12px;
+        border-radius: 6px;
     }
 
     .btn {
         padding: var(--spacing-sm) var(--spacing-md);
         font-size: 0.9rem;
         min-height: 44px;
-        border-radius: 10px;
+        border-radius: 5px;
     }
 
     /* Sidebar sections */
@@ -3729,7 +3805,7 @@ select:focus-visible,
     .filter-item {
         padding: var(--spacing-md);
         margin-bottom: var(--spacing-xs);
-        border-radius: 10px;
+        border-radius: 5px;
         font-size: 0.9rem;
         min-height: 44px;
         display: flex;
@@ -3744,7 +3820,7 @@ select:focus-visible,
     .form-control {
         padding: var(--spacing-md);
         font-size: 1rem;
-        border-radius: 10px;
+        border-radius: 5px;
         min-height: 44px;
     }
 
@@ -3948,11 +4024,10 @@ select:focus-visible,
     }
 
     .app-container {
-        -webkit-overflow-scrolling: touch;
+        overflow-x: hidden;
     }
 
     .app-sidebar {
-        -webkit-overflow-scrolling: touch;
         will-change: transform;
     }
 
