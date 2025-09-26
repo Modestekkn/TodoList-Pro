@@ -38,26 +38,23 @@
     <div class="app-container" id="app" style="opacity: 0; transition: opacity 0.8s ease-out;">
         <!-- Header -->
         <header class="app-header" role="banner">
-            <div style="display: flex; justify-content: space-around; align-items: start; gap: 4px;">
-                <div class="flex gap-4">
-                    <button class="btn btn-secondary btn-icon hamburger-btn" id="sidebar-toggle"
-                        aria-label="Ouvrir/fermer la barre latérale" aria-expanded="true" aria-controls="sidebar">
-                        <i class="fas fa-bars" aria-hidden="true"></i>
-                    </button>
-                    <div class="app-logo-container">
-                        <div class="app-logo"><i class="fas fa-clipboard-list"></i></div>
-                        <h1 class="app-title">TodoList Pro</h1>
-                    </div>
+            <div class="header-left">
+                <button class="btn btn-secondary btn-icon hamburger-btn" id="sidebar-toggle"
+                    aria-label="Ouvrir/fermer la barre latérale" aria-expanded="true" aria-controls="sidebar">
+                    <i class="fas fa-bars" aria-hidden="true"></i>
+                </button>
+                <div class="app-logo-container">
+                    <div class="app-logo"><i class="fas fa-clipboard-list"></i></div>
+                    <h1 class="app-title">TodoList Pro</h1>
                 </div>
-
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+            <div class="header-center">
                 <!-- Barre de recherche -->
                 <div class="search-container" role="search">
                     <label for="search-input" class="sr-only">Rechercher dans les tâches</label>
                     <input type="text" class="input search-input" id="search-input" placeholder="Rechercher..."
-                        style="width: 200px;" aria-label="Rechercher dans les tâches" autocomplete="off">
+                        aria-label="Rechercher dans les tâches" autocomplete="off">
                     <button class="btn btn-secondary btn-icon" id="clear-search" title="Effacer la recherche"
                         aria-label="Effacer la recherche">
                         <i class="fas fa-times" aria-hidden="true"></i>
@@ -74,7 +71,7 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-2">
+            <div class="header-right">
                 <button class="btn btn-secondary btn-icon" id="focus-mode-toggle" title="Mode Focus"><i
                         class="fas fa-bullseye"></i></button>
                 <button class="btn btn-secondary btn-icon" id="theme-toggle">
@@ -201,6 +198,11 @@
                                 <option value="">Aucune catégorie</option>
                             </select>
                             <input type="date" class="input" id="task-due-date" style="width: auto;">
+                            <div class="time-group">
+                                <input type="time" class="input" id="task-start-time" style="width: auto;" placeholder="Heure début" title="Heure de début">
+                                <span style="align-self: center; color: var(--text-muted); font-size: 0.9rem;">à</span>
+                                <input type="time" class="input" id="task-end-time" style="width: auto;" placeholder="Heure fin" title="Heure de fin">
+                            </div>
                         </div>
                         <button class="btn btn-primary" id="add-task-btn" style="width: auto;">
                             Ajouter
@@ -945,6 +947,7 @@ Escape - Effacer recherche/Sortir du mode focus
                         </div>
                         ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
                         ${dueDateInfo}
+                        ${task.timeRange ? `<div class="task-time-range">🕐 ${task.timeRange}</div>` : ''}
                         ${task.subtasks.length > 0 ? `<div class="task-subtasks-count">${task.subtasks.filter(st => st.completed).length}/${task.subtasks.length} sous-tâches</div>` : ''}
                         <div class="task-actions" style="opacity: 1; margin-top: 8px;">
                             <button class="btn-icon" onclick="app.editTask('${task.id}')" title="Modifier">✏️</button>
@@ -1239,37 +1242,52 @@ Escape - Effacer recherche/Sortir du mode focus
                 const title = input.value.trim();
 
                 if (title) {
-                    // Récupérer toutes les valeurs du formulaire
-                    const priority = document.getElementById('task-priority').value;
-                    const categoryId = document.getElementById('task-category').value || null;
-                    const dueDate = document.getElementById('task-due-date').value || null;
-                    const description = document.getElementById('task-description').value.trim();
-                    const tagsInput = document.getElementById('task-tags').value.trim();
-                    const estimatedTime = document.getElementById('task-estimated-time').value || null;
-                    const recurring = document.getElementById('task-recurring').value || null;
+        // Récupérer toutes les valeurs du formulaire
+        const priority = document.getElementById('task-priority').value;
+        const categoryId = document.getElementById('task-category').value || null;
+        const dueDate = document.getElementById('task-due-date').value || null;
+        const startTime = document.getElementById('task-start-time').value || null;
+        const endTime = document.getElementById('task-end-time').value || null;
+        const description = document.getElementById('task-description').value.trim();
+        const tagsInput = document.getElementById('task-tags').value.trim();
+        const estimatedTime = document.getElementById('task-estimated-time').value || null;
+        const recurring = document.getElementById('task-recurring').value || null;                    const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
 
-                    const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
+        // Valider les horaires si fournis
+        let timeRange = null;
+        if (startTime && endTime) {
+            const startMinutes = this.timeToMinutes(startTime);
+            const endMinutes = this.timeToMinutes(endTime);
+            if (endMinutes <= startMinutes) {
+                this.showNotification('L\'heure de fin doit être après l\'heure de début', 'error');
+                return;
+            }
+            timeRange = `${startTime} - ${endTime}`;
+        } else if (startTime || endTime) {
+            timeRange = startTime ? `${startTime} - ?` : `? - ${endTime}`;
+        }
 
-                    const task = {
-                        id: Date.now().toString(),
-                        title,
-                        completed: false,
-                        createdAt: new Date().toISOString(),
-                        updatedAt: new Date().toISOString(),
-                        priority,
-                        category: categoryId,
-                        dueDate,
-                        description,
-                        tags,
-                        estimatedTime: estimatedTime ? parseInt(estimatedTime) : null,
-                        actualTime: 0,
-                        subtasks: [],
-                        dependencies: [],
-                        recurring,
-                        favorite: false
-                    };
-
-                    this.state.tasks.unshift(task);
+        const task = {
+            id: Date.now().toString(),
+            title,
+            completed: false,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            priority,
+            category: categoryId,
+            dueDate,
+            startTime,
+            endTime,
+            timeRange,
+            description,
+            tags,
+            estimatedTime: estimatedTime ? parseInt(estimatedTime) : null,
+            actualTime: 0,
+            subtasks: [],
+            dependencies: [],
+            recurring,
+            favorite: false
+        };                    this.state.tasks.unshift(task);
 
                     // Réinitialiser le formulaire
                     this.resetTaskForm();
@@ -1285,11 +1303,18 @@ Escape - Effacer recherche/Sortir du mode focus
                 }
             }
 
+            timeToMinutes(timeString) {
+                const [hours, minutes] = timeString.split(':').map(Number);
+                return hours * 60 + minutes;
+            }
+
             resetTaskForm() {
                 document.getElementById('task-input').value = '';
                 document.getElementById('task-priority').value = 'normal';
                 document.getElementById('task-category').value = '';
                 document.getElementById('task-due-date').value = '';
+                document.getElementById('task-start-time').value = '';
+                document.getElementById('task-end-time').value = '';
                 document.getElementById('task-description').value = '';
                 document.getElementById('task-tags').value = '';
                 document.getElementById('task-estimated-time').value = '';
@@ -1309,49 +1334,58 @@ Escape - Effacer recherche/Sortir du mode focus
             }
 
             showNotification(message, type = 'info') {
-                // Créer une notification temporaire
-                const notification = document.createElement('div');
-                notification.className = `notification notification-${type} animate-fade-in`;
-                notification.textContent = message;
-                let backgroundColor;
-                switch (type) {
-                    case 'success':
-                        backgroundColor = 'var(--secondary-color)';
-                        break;
-                    case 'warning':
-                        backgroundColor = 'var(--warning-color)';
-                        break;
-                    case 'error':
-                        backgroundColor = 'var(--danger-color)';
-                        break;
-                    default:
-                        backgroundColor = 'var(--primary-color)';
-                }
-
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background: ${backgroundColor};
-                    color: white;
-                    padding: var(--spacing-md);
-                    border-radius: var(--border-radius);
-                    box-shadow: var(--shadow-lg);
-                    z-index: 1000;
-                    font-size: 0.875rem;
-                    max-width: 300px;
+                // Système de notification plus discret avec toast
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.innerHTML = `
+                    <span class="toast-icon">
+                        ${type === 'success' ? '✓' : type === 'error' ? '✗' : type === 'warning' ? '⚠' : 'ℹ'}
+                    </span>
+                    <span class="toast-message">${message}</span>
                 `;
 
-                document.body.appendChild(notification);
+                // Styles inline pour éviter la dépendance CSS
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: var(--bg-primary);
+                    color: var(--text-primary);
+                    padding: 10px 16px;
+                    border-radius: 6px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    z-index: 1000;
+                    font-size: 14px;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    border-left: 3px solid ${type === 'success' ? 'var(--priority-low)' : 
+                                           type === 'error' ? 'var(--priority-critical)' : 
+                                           type === 'warning' ? 'var(--priority-high)' : 'var(--primary-color)'};
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease-out;
+                    max-width: 320px;
+                `;
+
+                document.body.appendChild(toast);
+
+                // Animation d'entrée
+                requestAnimationFrame(() => {
+                    toast.style.transform = 'translateX(0)';
+                });
 
                 // Annoncer aux lecteurs d'écran
                 this.announceToScreenReader(message);
 
+                // Supprimer après 2.5 secondes (réduit de 3s)
                 setTimeout(() => {
-                    notification.style.opacity = '0';
-                    notification.style.transform = 'translateX(100%)';
-                    setTimeout(() => notification.remove(), 300);
-                }, 3000);
+                    toast.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 300);
+                }, 2500);
             }
 
             handleTaskInputKeypress(e) {
@@ -1604,6 +1638,7 @@ Escape - Effacer recherche/Sortir du mode focus
                             </div>
                             ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
                             ${dueDateInfo}
+                            ${task.timeRange ? `<div class="task-time-range">🕐 ${task.timeRange}</div>` : ''}
                             ${task.subtasks.length > 0 ? `<div class="task-subtasks-count">${task.subtasks.filter(st => st.completed).length}/${task.subtasks.length} sous-tâches</div>` : ''}
                             ${task.dependencies.length > 0 ? `<div class="task-dependencies">🔗 ${task.dependencies.length} dépendance(s)</div>` : ''}
                         </div>
@@ -1696,19 +1731,15 @@ Escape - Effacer recherche/Sortir du mode focus
 
                     if (task.completed) {
                         task.completedAt = new Date().toISOString();
-                        taskElement.classList.add('completing');
+                taskElement.classList.add('completing');
 
-                        // Animation de célébration
-                        setTimeout(() => {
-                            taskElement.classList.add('celebrating');
-                            setTimeout(() => {
-                                taskElement.classList.remove('celebrating');
-                            }, 1000);
-                        }, 200);
-
-                        this.showNotification('Tâche terminée ! 🎉', 'success');
-
-                        // Ajouter des points de gamification
+                // Animation de célébration plus discrète
+                setTimeout(() => {
+                    taskElement.classList.add('celebrating');
+                    setTimeout(() => {
+                        taskElement.classList.remove('celebrating');
+                    }, 800);
+                }, 200);                        // Ajouter des points de gamification
                         this.addPoints(this.calculateTaskPoints(task));
 
                         // Créer une nouvelle tâche récurrente si nécessaire
@@ -1729,21 +1760,20 @@ Escape - Effacer recherche/Sortir du mode focus
                 }
             }
 
-            async deleteTask(id) {
+            deleteTask(id) {
                 const taskElement = document.querySelector(`[data-task-id="${id}"]`);
                 const task = this.state.tasks.find(t => t.id === id);
-
-                const confirmed = await this.confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?', 'Supprimer la tâche');
-                if (confirmed) {
+                
+                if (taskElement) {
                     taskElement.classList.add('deleting');
-
-                    setTimeout(() => {
-                        this.state.tasks = this.state.tasks.filter(t => t.id !== id);
-                        this.saveState();
-                        this.render();
-                        this.showNotification('Tâche supprimée', 'info');
-                    }, 300);
                 }
+
+                setTimeout(() => {
+                    this.state.tasks = this.state.tasks.filter(t => t.id !== id);
+                    this.saveState();
+                    this.render();
+                    this.showNotification('Tâche supprimée', 'info');
+                }, 300);
             }
 
             duplicateTask(id) {

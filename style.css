@@ -110,15 +110,32 @@ h1, h2, h3, h4, h5, h6, .app-title, .sidebar-title, .kanban-title {
 
 .app-header {
     grid-area: header;
-    background: var(--bg-primary);
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     border-bottom: var(--border-width) solid var(--bg-tertiary);
     padding: var(--spacing-md) var(--spacing-lg);
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
-    gap: 5px;
-    box-shadow: var(--shadow-sm);
+    gap: var(--spacing-md);
+    box-shadow: 0 2px 8px rgba(109, 40, 217, 0.08);
     animation: slideInFromTop 0.6s ease-out;
+    backdrop-filter: blur(10px);
+}
+
+.header-left, .header-center, .header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.header-center {
+    flex: 1;
+    justify-content: center;
+    max-width: 600px;
+}
+
+.header-right {
+    justify-content: flex-end;
 }
 
 @keyframes slideInFromTop {
@@ -1079,6 +1096,35 @@ body::-webkit-scrollbar {
     gap: var(--spacing-sm);
     align-items: center;
     flex-wrap: wrap;
+}
+
+.task-options input[type="time"] {
+    min-width: 120px;
+    font-size: 0.9rem;
+}
+
+.task-time-range {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    padding: 4px 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    margin-top: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.time-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.time-group span {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .advanced-options {
@@ -3204,6 +3250,24 @@ select:focus-visible,
 
     .app-header {
         padding: var(--spacing-md);
+        flex-wrap: wrap;
+        gap: var(--spacing-sm);
+    }
+
+    .header-left {
+        flex: 1;
+        min-width: auto;
+    }
+
+    .header-center {
+        order: 3;
+        flex-basis: 100%;
+        justify-content: flex-start;
+        margin-top: var(--spacing-sm);
+    }
+
+    .header-right {
+        flex: 0 0 auto;
     }
 
     .app-logo {
@@ -3214,12 +3278,19 @@ select:focus-visible,
         font-size: 1.25rem;
     }
 
-    .search-container .search-input {
-        width: 150px !important;
+    .search-container {
+        flex: 1;
+        max-width: none;
     }
 
-    .search-input:focus {
-        width: 200px !important;
+    .search-container .search-input {
+        width: 100% !important;
+        min-width: 200px;
+    }
+
+    .pomodoro-timer,
+    .stats-summary {
+        display: none;
     }
 
     /* Popups sur mobile */
@@ -3281,6 +3352,29 @@ select:focus-visible,
 
     .task-options {
         gap: var(--spacing-xs);
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .task-options input,
+    .task-options select {
+        width: 100% !important;
+        min-width: auto !important;
+    }
+
+    .task-options input[type="time"] {
+        min-width: 100px;
+    }
+
+    /* Groupe les champs d'horaire sur une ligne */
+    .time-group {
+        display: flex;
+        gap: var(--spacing-xs);
+    }
+
+    .task-input-container {
+        flex-direction: column;
+        align-items: stretch;
     }
 
     /* Boutons plus visibles sur mobile */
