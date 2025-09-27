@@ -74,8 +74,8 @@ body {
   overflow-x: hidden;
   overflow-y: hidden;
   animation: fadeInApp 0.8s ease-out;
-  /* Masquer les scrollbars du body */
-  scrollbar-width: none;
+  /* Masquer les scrollbars du body 
+  scrollbar-width: none;*/
   /* Firefox */
   -ms-overflow-style: none;
   /* Internet Explorer 10+ */
@@ -1612,9 +1612,6 @@ body::-webkit-scrollbar {
   font-size: 0.875rem;
 }
 
-.btn-icon:hover {
-  background: var(--bg-tertiary);
-}
 
 /* État vide */
 .empty-state {
