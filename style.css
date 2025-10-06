@@ -81,6 +81,41 @@ body {
   /* Internet Explorer 10+ */
 }
 
+/* Détection de support pour scrollbar-width */
+@supports (scrollbar-width: none) {
+  .app-sidebar,
+  .app-main,
+  .main-content,
+  .tasks-container,
+  .sidebar-content,
+  .modal-content,
+  .popup-content {
+    scrollbar-width: none;
+  }
+}
+
+/* Fallback pour navigateurs sans support de scrollbar-width */
+@supports not (scrollbar-width: none) {
+  .app-sidebar,
+  .app-main,
+  .main-content,
+  .tasks-container,
+  .sidebar-content,
+  .modal-content,
+  .popup-content {
+    overflow: -moz-scrollbars-none;
+    /* Firefox ancien */
+    -ms-overflow-style: none;
+    /* IE */
+  }
+}
+
+/* Classe pour l'état de chargement de l'application */
+.app-loading {
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+
 h1,
 h2,
 h3,
@@ -198,8 +233,8 @@ h6,
     var(--primary-color),
     var(--secondary-color)
   );
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: logoFloat 3s ease-in-out infinite;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
@@ -213,8 +248,8 @@ h6,
     var(--primary-color),
     var(--secondary-color)
   );
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.02em;
 }
@@ -261,11 +296,13 @@ h6,
   overflow-x: hidden;
   box-shadow: var(--shadow-sm);
   animation: slideInFromLeft 0.7s ease-out 0.2s both;
-  /* Masquer la scrollbar */
-  scrollbar-width: none;
-  /* Firefox */
+  /* Masquer la scrollbar - Approche progressive */
   -ms-overflow-style: none;
   /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+  overflow: auto;
+  /* Fallback pour navigateurs non supportés */
 }
 
 /* Masquer la scrollbar pour WebKit (Chrome, Safari, Edge) */
@@ -273,12 +310,12 @@ h6,
   display: none;
 }
 
-/* Masquer toutes les scrollbars dans l'application */
+/* Masquer toutes les scrollbars dans l'application - Approche progressive */
 * {
-  scrollbar-width: none;
-  /* Firefox */
   -ms-overflow-style: none;
   /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Masquer les scrollbars WebKit pour tous les éléments */
@@ -298,10 +335,12 @@ body::-webkit-scrollbar {
 .sidebar-content,
 .modal-content,
 .popup-content {
-  scrollbar-width: none;
-  /* Firefox */
   -ms-overflow-style: none;
   /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+  overflow: auto;
+  /* Fallback pour navigateurs non supportés */
 }
 
 .app-main::-webkit-scrollbar,
@@ -332,11 +371,13 @@ body::-webkit-scrollbar {
   overflow-x: hidden;
   background: var(--bg-secondary);
   animation: slideInFromRight 0.8s ease-out 0.4s both;
-  /* Masquer la scrollbar */
-  scrollbar-width: none;
-  /* Firefox */
+  /* Masquer la scrollbar - Approche progressive */
   -ms-overflow-style: none;
   /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+  overflow-y: auto;
+  /* Fallback pour navigateurs non supportés */
 }
 
 @keyframes slideInFromRight {
@@ -630,9 +671,9 @@ body::-webkit-scrollbar {
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-x: hidden;
     overflow-y: auto;
-    /* Masquer la scrollbar */
-    scrollbar-width: none;
+    /* Masquer la scrollbar - Approche progressive */
     -ms-overflow-style: none;
+    scrollbar-width: none;
     backdrop-filter: blur(10px);
   }
 
