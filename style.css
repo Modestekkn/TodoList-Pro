@@ -937,7 +937,8 @@ body::-webkit-scrollbar {
 
 /* Styles pour la navigation */
 .nav-list,
-.filter-list {
+.filter-list,
+.sort-list {
   list-style: none;
 }
 
@@ -948,6 +949,10 @@ body::-webkit-scrollbar {
 
 .quick-filters {
   animation: slideInFromLeft 0.6s ease-out 0.7s both;
+}
+
+.sort-options {
+  animation: slideInFromLeft 0.6s ease-out 0.8s both;
 }
 
 .categories {
@@ -971,7 +976,8 @@ body::-webkit-scrollbar {
 }
 
 .nav-item,
-.filter-item {
+.filter-item,
+.sort-item {
   display: block;
   padding: var(--spacing-sm);
   color: var(--text-secondary);
@@ -989,7 +995,8 @@ body::-webkit-scrollbar {
 }
 
 .nav-item:hover,
-.filter-item:hover {
+.filter-item:hover,
+.sort-item:hover {
   background: var(--bg-tertiary);
   color: var(--primary-color); /* Changer la couleur du texte au survol */
   transform: translateX(8px) scale(1.02); /* Effet de glissement et léger agrandissement */
@@ -997,13 +1004,15 @@ body::-webkit-scrollbar {
 }
 
 .nav-item:active,
-.filter-item:active {
+.filter-item:active,
+.sort-item:active {
   transform: translateX(4px) scale(0.98); /* Léger enfoncement au clic */
   background: var(--primary-color) 20; /* Couleur de fond au clic */
 }
 
 .nav-item::before,
-.filter-item::before {
+.filter-item::before,
+.sort-item::before {
   content: "";
   position: absolute;
   top: 0;
@@ -1020,11 +1029,14 @@ body::-webkit-scrollbar {
 }
 
 .nav-item:hover::before,
-.filter-item:hover::before {
+.filter-item:hover::before,
+.sort-item:hover::before {
   left: 100%;
 }
 
-.nav-item.active {
+.nav-item.active,
+.filter-item.active,
+.sort-item.active {
   background: var(--primary-color);
   color: var(--text-light);
   font-weight: 600; /* Rendre le texte actif plus gras */

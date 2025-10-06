@@ -214,6 +214,38 @@
             </ul>
           </div>
 
+          <!-- Options de tri -->
+          <div class="sort-options">
+            <h3 class="font-medium text-sm text-muted mb-2 mt-4">TRI</h3>
+            <ul class="sort-list">
+              <li>
+                <a href="#" class="sort-item active" data-sort="default">
+                  <i class="fas fa-sort"></i> Par défaut
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sort-item" data-sort="time-asc">
+                  <i class="fas fa-clock"></i> Horaire croissant
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sort-item" data-sort="time-desc">
+                  <i class="fas fa-clock"></i> Horaire décroissant
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sort-item" data-sort="priority">
+                  <i class="fas fa-flag"></i> Par priorité
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sort-item" data-sort="due-date">
+                  <i class="fas fa-calendar"></i> Par échéance
+                </a>
+              </li>
+            </ul>
+          </div>
+
           <!-- Statistiques -->
           <div class="stats-widget">
             <h3 class="font-medium text-sm text-muted mb-2 mt-4">
@@ -436,6 +468,7 @@
             categories: [],
             currentView: "list",
             currentFilter: "all",
+            sortOrder: "default",
             theme: "light",
             settings: {},
             calendarDate: new Date(), // Initialiser le calendrier sur aujourd'hui
@@ -763,6 +796,13 @@
             });
           });
 
+          document.querySelectorAll(".sort-item").forEach((item) => {
+            item.addEventListener("click", (e) => {
+              e.preventDefault();
+              this.changeSortOrder(item.dataset.sort);
+            });
+          });
+
           // Raccourcis clavier
           document.addEventListener(
             "keydown",
@@ -929,6 +969,13 @@ S - Sauvegarder
 3 - À venir
 4 - En retard
 5 - Terminées
+
+OPTIONS DE TRI:
+- Par défaut (priorité > échéance > création)
+- Horaire croissant (8h → 18h)
+- Horaire décroissant (18h → 8h)
+- Par priorité uniquement
+- Par échéance uniquement
 
 Escape - Effacer recherche/Sortir du mode focus
 ? - Afficher cette aide
@@ -1610,6 +1657,31 @@ Escape - Effacer recherche/Sortir du mode focus
           this.showNotification(`Filtre appliqué: ${filter}`, "info");
         }
 
+        changeSortOrder(sortOrder) {
+          // Mettre à jour l'état
+          this.state.sortOrder = sortOrder;
+          
+          // Mettre à jour l'interface visuelle
+          document.querySelectorAll('.sort-item').forEach(item => {
+            item.classList.remove('active');
+          });
+          document.querySelector(`[data-sort="${sortOrder}"]`).classList.add('active');
+          
+          // Re-rendre les tâches avec le nouveau tri
+          this.render();
+          
+          // Afficher une notification
+          const sortNames = {
+            'default': 'Par défaut',
+            'time-asc': 'Horaire croissant',
+            'time-desc': 'Horaire décroissant',
+            'priority': 'Par priorité',
+            'due-date': 'Par échéance'
+          };
+          
+          this.showNotification(`Tri appliqué: ${sortNames[sortOrder]}`, "info");
+        }
+
         toggleTheme() {
           // Système de thèmes simplifié - seulement 3 thèmes
           const themes = ["light", "dark", "minimal"];
@@ -2071,27 +2143,90 @@ Escape - Effacer recherche/Sortir du mode focus
 
         sortTasks(tasks) {
           return tasks.sort((a, b) => {
-            // Tâches non terminées en premier
+            // Tâches non terminées en premier (sauf pour tri par horaire)
+            if (this.state.sortOrder !== 'time-asc' && this.state.sortOrder !== 'time-desc') {
+              if (a.completed !== b.completed) {
+                return a.completed ? 1 : -1;
+              }
+            }
+
+            // Tri selon l'ordre sélectionné
+            switch (this.state.sortOrder) {
+              case 'time-asc':
+                return this.compareByTime(a, b, false);
+              case 'time-desc':
+                return this.compareByTime(a, b, true);
+              case 'priority':
+                return this.compareByPriority(a, b);
+              case 'due-date':
+                return this.compareByDueDate(a, b);
+              default: // 'default'
+                // Tri par défaut : priorité > échéance > création
+                const priorityDiff = this.compareByPriority(a, b);
+                if (priorityDiff !== 0) return priorityDiff;
+                
+                const dueDateDiff = this.compareByDueDate(a, b);
+                if (dueDateDiff !== 0) return dueDateDiff;
+                
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            }
+          });
+        }
+
+        compareByTime(a, b, descending = false) {
+          const aHasTime = a.startTime || a.endTime;
+          const bHasTime = b.startTime || b.endTime;
+          
+          // Si aucune des deux tâches n'a d'horaire, trier par priorité puis par statut
+          if (!aHasTime && !bHasTime) {
             if (a.completed !== b.completed) {
               return a.completed ? 1 : -1;
             }
-
-            // Puis par priorité
-            const priorityOrder = { critical: 0, high: 1, normal: 2, low: 3 };
-            const priorityDiff =
-              priorityOrder[a.priority] - priorityOrder[b.priority];
+            return this.compareByPriority(a, b);
+          }
+          
+          // Mettre les tâches sans horaire à la fin
+          if (!aHasTime) return 1;
+          if (!bHasTime) return -1;
+          
+          // Utiliser startTime en priorité, sinon endTime
+          const aTime = a.startTime || a.endTime;
+          const bTime = b.startTime || b.endTime;
+          
+          // Gérer les cas où les heures sont identiques
+          if (aTime === bTime) {
+            // Si même heure de début, comparer par priorité
+            const priorityDiff = this.compareByPriority(a, b);
             if (priorityDiff !== 0) return priorityDiff;
-
-            // Puis par date d'échéance
-            if (a.dueDate && b.dueDate) {
-              return new Date(a.dueDate) - new Date(b.dueDate);
+            
+            // Puis par statut
+            if (a.completed !== b.completed) {
+              return a.completed ? 1 : -1;
             }
-            if (a.dueDate) return -1;
-            if (b.dueDate) return 1;
-
-            // Enfin par date de création (plus récent en premier)
+            
+            // Enfin par date de création
             return new Date(b.createdAt) - new Date(a.createdAt);
-          });
+          }
+          
+          const aMinutes = this.timeToMinutes(aTime);
+          const bMinutes = this.timeToMinutes(bTime);
+          
+          const diff = aMinutes - bMinutes;
+          return descending ? -diff : diff;
+        }
+
+        compareByPriority(a, b) {
+          const priorityOrder = { critical: 0, high: 1, normal: 2, low: 3 };
+          return priorityOrder[a.priority] - priorityOrder[b.priority];
+        }
+
+        compareByDueDate(a, b) {
+          if (a.dueDate && b.dueDate) {
+            return new Date(a.dueDate) - new Date(b.dueDate);
+          }
+          if (a.dueDate) return -1;
+          if (b.dueDate) return 1;
+          return 0;
         }
 
         createTaskElement(task) {

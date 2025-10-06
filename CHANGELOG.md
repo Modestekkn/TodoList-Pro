@@ -2,31 +2,31 @@
 
 ## Version 2.1.0 - Optimisation de l'espace et organisation des formulaires
 
-### ✨ Nouvelles fonctionnalités
+### Nouvelles fonctionnalités
 
-#### 📐 Expansion automatique de la vue principale
+#### Expansion automatique de la vue principale
 - **Sidebar rétractable** : Le sidebar peut maintenant être masqué via le bouton hamburger
 - **Vue plein écran** : Quand le sidebar est masqué, la vue principale occupe tout l'espace disponible
 - **Mémorisation de l'état** : L'application se souvient si vous préférez avoir le sidebar ouvert ou fermé
 - **Animation fluide** : Transition douce lors du masquage/affichage du sidebar
 - **CSS Grid adaptatif** : Utilisation de CSS Grid pour un redimensionnement intelligent
 
-#### 📝 Organisation améliorée des formulaires
+#### Organisation améliorée des formulaires
 - **Disposition 2x2** : Les champs du formulaire sont maintenant organisés deux par deux
 - **Première ligne** : Priorité + Catégorie
 - **Deuxième ligne** : Date d'échéance + Plage horaire (début à fin)
 - **Responsive** : Sur mobile, les champs s'empilent verticalement pour une meilleure utilisabilité
 - **Groupement visuel** : Les champs d'horaire restent groupés même sur mobile
 
-### 🎨 Améliorations de l'ergonomie
+###  Améliorations de l'ergonomie
 
-#### 📱 Nouvelle structure des formulaires
+####  Nouvelle structure des formulaires
 - Classe `.form-row` pour organiser les champs par paire
 - Chaque ligne contient exactement deux éléments
 - Espacement cohérent entre les lignes
 - Meilleure utilisation de l'espace horizontal
 
-#### 🖥️ Optimisation de l'espace écran
+####  Optimisation de l'espace écran
 - **Mode compact** : Possibilité de masquer le sidebar pour plus d'espace
 - **Flexibilité** : L'utilisateur choisit son mode de travail (sidebar ouvert/fermé)
 - **Persistance** : L'application mémorise les préférences d'affichage
@@ -34,19 +34,19 @@
 
 ### 🛠 Améliorations techniques
 
-#### 💅 Nouvelles classes CSS
+####  Nouvelles classes CSS
 - `.form-row` : Container pour les champs groupés par deux
 - `.sidebar-collapsed` : État de l'application quand le sidebar est masqué
 - `.time-separator` : Styles pour le séparateur "à" entre les horaires
 - Amélioration des media queries pour une meilleure responsiveness
 
-#### 🔧 Fonctionnalités JavaScript
+####  Fonctionnalités JavaScript
 - Fonction `toggleSidebar()` améliorée avec sauvegarde d'état
 - Restauration automatique de l'état du sidebar au chargement
 - Gestion différenciée mobile/desktop pour le comportement du sidebar
 - Sauvegarde dans localStorage de la préférence utilisateur
 
-### 🐛 Corrections et optimisations
+###  Corrections et optimisations
 - Meilleure gestion des transitions CSS
 - Amélioration de la fonction de sauvegarde d'état
 - Optimisation de l'affichage sur tous les types d'écrans
@@ -56,7 +56,7 @@
 
 ## Version 2.0.0 - Améliorations UX et Nouvelles Fonctionnalités
 
-### ✨ Nouvelles fonctionnalités
+###  Nouvelles fonctionnalités
 
 #### 🕐 Gestion des horaires
 - Ajout de champs pour définir l'heure de début et de fin des tâches
